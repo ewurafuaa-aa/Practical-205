@@ -16,6 +16,13 @@ router.post('/', async (req, res) => {
             emergencyName, 
             emergencyContact, 
             emergencyRelationship
-        })
+        });
+
+        const savedPatient = await patient.save();
+
+        res.status(200).json(savedPatient);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'An error occurred while registering the patient.'});
     }
-})
+});

@@ -7,13 +7,13 @@ const Patient = require('../models/patient');
 router.post('/', async (req, res) => {
   try {
     // Extract patient data from the request body
-    const { patientId, surname, othernames, gender, phoneNumber, residentialAddress, emergencyName, emergencyContact, emergencyRelationship } = req.body;
+    const {patientId, surname, otherNames, gender, phoneNumber, residentialAddress, emergencyName, emergencyContact, emergencyRelationship} = req.body;
 
     // Create a new patient record
     const patient = new Patient({
       patientId,
       surname,
-      othernames,
+      otherNames,
       gender,
       phoneNumber,
       residentialAddress,
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     res.status(201).json(savedPatient);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while registering the patient.' });
+    res.status(500).json({error: 'An error occurred while registering the patient.'});
   }
 });
 
@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
     res.json(patients);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while retrieving the patient list.' });
+    res.status(500).json({error: 'An error occurred while retrieving the patient list.'});
   }
 });
 
@@ -53,27 +53,25 @@ router.get('/:id', async (req, res) => {
     const patientId = req.params.id;
 
     // Fetch the patient record from the database based on the provided patientId
-    const patient = await Patient.findOne({ patientId });
+    const patient = await Patient.findOne({patientId});
 
     if (!patient) {
-      return res.status(404).json({ error: 'Patient not found.' });
+      return res.status(404).json({error: 'Patient not found.'});
     }
 
     res.json(patient);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while retrieving the patient details.' });
+    res.status(500).json({error: 'An error occurred while retrieving the patient details.'});
   }
 });
 
-// Route: PUT /patients/:id
-// Description: Update details of a specific patient
+
 router.put('/:id', async (req, res) => {
   try {
     const patientId = req.params.id;
     const updatedPatientData = req.body;
-
-    // Find the patient record based on the provided patientId and update it with the new data
+   
     const updatedPatient = await Patient.findOneAndUpdate({patientId}, updatedPatientData, {new: true});
 
     if (!updatedPatient) {
